@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="search-trip-add.js" defer></script>
+</head>
+<body>
+    <form flight__search-form flight__search-form-multi-city class="multi-city__search-form hidden">
+
+        <!-- first row -->
+        <section class="multi-city__search-top-section">
+            <!-- flight passenger card -->
+            <div class="passenger__card-wrapper">
+                <div passenger__card class="dropdown-label">
+                    <p class="dropdown-label__label">Passengers &amp; Class</p>
+                    <div class="passengers__modal-details">
+                        <h5 data-passenger="1">1 Traveler(s)</h5>
+                        <p data-class="Economy">(Economy)</p>
+                    </div>
+                </div>
+                <!-- modal -->
+                <section class="passenger__modal">
+                    <div class="passenger-category-wrapper">
+                        <h5 class="passenger__modal-title">Travelers</h5>
+                        <div class="passenger-category">
+                            <div class="passenger-category__title">
+                                <h5>Adults</h5>
+                                <p>(12 years+)</p>
+                            </div>
+                            <div btn__increment-decrement class="btn__increment-decrement-wrapper">
+                                <button type="button" class="btn__decrement">-</button>
+                                <input traveler-count type="text" id="travelers_adult" value="1"
+                                    class="btn__increment-decrement-input" readonly />
+                                <button type="button" class="btn__increment">+</button>
+                            </div>
+                            <div class="passenger-category__title">
+                                <h5>Children</h5>
+                                <p>(2-12Years)</p>
+                            </div>
+                            <div btn__increment-decrement class="btn__increment-decrement-wrapper">
+                                <button type="button" class="btn__decrement">-</button>
+                                <input traveler-count type="text" id="travelers_child" value="0"
+                                    class="btn__increment-decrement-input" readonly />
+                                <button type="button" class="btn__increment">+</button>
+                            </div>
+                            <div class="passenger-category__title">
+                                <h5>Infants</h5>
+                                <p>(below 2 years)</p>
+                            </div>
+                            <div btn__increment-decrement class="btn__increment-decrement-wrapper">
+                                <button type="button" class="btn__decrement">-</button>
+                                <input traveler-count type="text" id="travelers_infants" value="0"
+                                    class="btn__increment-decrement-input" readonly />
+                                <button type="button" class="btn__increment">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    <h5 class="passenger__modal-title">Booking Class</h5>
+                    <div flight__classes class="flight__class-wrapper">
+                        <label class="flight__class round--checkbox__label" for="flight__class-economy">
+                            <input type="radio" id="flight__class-economy" name="booking_class" value="Economy"
+                                checked />
+                            Economy
+                        </label>
+                        <label class="flight__class round--checkbox__label" for="flight__class-premium-economy">
+                            <input type="radio" id="flight__class-premium-economy" name="booking_class"
+                                value="Premium-Economy" />
+                            Premium Economy
+                        </label>
+                        <label class="flight__class round--checkbox__label" for="flight__class-premium-economy">
+                            <input type="radio" id="flight__class-premium-economy" name="booking_class"
+                                value="Premium-Business" />
+                            Premium Business / Upper
+                        </label>
+                        <label class="flight__class round--checkbox__label" for="flight__class-business">
+                            <input type="radio" id="flight__class-business" name="booking_class" value="Business" />
+                            Business
+                        </label>
+                        <label class="flight__class round--checkbox__label" for="flight__class-first-class">
+                            <input type="radio" id="flight__class-first-class" name="booking_class"
+                                value="First-Class" />
+                            First Class
+                        </label>
+                    </div>
+                </section>
+            </div>
+            <div class="dropdown-label">
+                <label class="dropdown-label__label">Preferred Carrier</label>
+                <select class="dropdown-input-label-wrapper" id="preferred_carrier" name="preferred_carrier">
+                    <option value="" selected>All Carrier</option>
+                    <?php foreach($airlines_code['data'] as $airlines){ ?>
+                    <option value="<?php echo $airlines['iata_code']; ?>"><?php echo $airlines['airline_name']; ?>
+                    </option>
+                    <?php } ?>
+                </select>
+            </div>
+        </section>
+        <!-- first row : end -->
+        <!-- second row -->
+        <section class="multi-city__search-city-section">
+            <section class="flight__dropdown">
+                <div flight__dropdown-card-basic onclick=multiCitySearch() class="dropdown-card dropdown-card--basic">
+                    <p class="dropdown-card__title dropdown-card__title--basic">Departure</p>
+                    <div>
+                        <input id="departure_airport" class="dropdown-card__input dropdown-card__input--basic"
+                            type="text" placeholder="Leaving From" value="" readonly />
+                        <!-- <p class="dropdown-card__status">Departure</p> -->
+                    </div>
+                    <div class="flight__dropdown-card-arrow flight__dropdown-card-arrow--basic"></div>
+                </div>
+                <div class="flight__dropdown-options flight__dropdown-options--basic">
+                    <div class="flight__search-box">
+                        <svg class="icon flight__search-icon">
+                            <use xlink:href="./assets/icons/flight/searchh.svg#search"></use>
+                        </svg>
+                        <input class="flight__search-input" type="text"
+                            placeholder="Airport name or airport code" />
+                    </div>
+                    <ul>
+                        <li flight__search-result onclick=searchResult() class="flight__info">
+                            <div>
+                                <p class="flight__info-location">Boston</p>
+                                <p class="flight__info-airport">
+                                    Boston - Logan International Airport
+                                </p>
+                            </div>
+                            <h5 class="flight__info-code">BOS</h5>
+                        </li>
+                        <li flight__search-result onclick=searchResult() class="flight__info">
+                            <div>
+                                <p class="flight__info-location">Dhaka</p>
+                                <p class="flight__info-airport">
+                                    Hazrat Shahjalal International Airport
+                                </p>
+                            </div>
+                            <h5 class="flight__info-code">DAC</h5>
+                        </li>
+                        <li flight__search-result onclick=searchResult() class="flight__info">
+                            <div>
+                                <p class="flight__info-location">London</p>
+                                <p class="flight__info-airport">
+                                    London- London Heathrow Airport
+                                </p>
+                            </div>
+                            <h5 class="flight__info-code">LHR</h5>
+                        </li>
+                        <li flight__search-result onclick=searchResult() class="flight__info">
+                            <div>
+                                <p class="flight__info-location">Perth</p>
+                                <p class="flight__info-airport">
+                                    Perth - Perth Airport
+                                </p>
+                            </div>
+                            <h5 class="flight__info-code">PER</h5>
+                        </li>
+                        <li flight__search-result onclick=searchResult() class="flight__info">
+                            <div>
+                                <p class="flight__info-location">Bangkok</p>
+                                <p class="flight__info-airport">
+                                    Suvarnabhumi Airport
+                                </p>
+                            </div>
+                            <h5 class="flight__info-code">BKK</h5>
+                        </li>
+                        <li flight__search-result onclick=searchResult() class="flight__info">
+                            <div>
+                                <p class="flight__info-location">Dubai</p>
+                                <p class="flight__info-airport">
+                                    Dubai International Airport
+                                </p>
+                            </div>
+                            <h5 class="flight__info-code">DXB</h5>
+                        </li>
+                        <li flight__search-result onclick=searchResult() class="flight__info">
+                            <div>
+                                <p class="flight__info-location">Singapore</p>
+                                <p class="flight__info-airport">
+                                    Singapore Changi Airport
+                                </p>
+                            </div>
+                            <h5 class="flight__info-code">SIN</h5>
+                        </li>
+                    </ul>
+                </div>
+                <div class="overlay"></div>
+            </section>
+            <section class="flight__dropdown">
+                <div flight__dropdown-card-basic onclick=multiCitySearch() class="dropdown-card dropdown-card--basic">
+                    <p class="dropdown-card__title dropdown-card__title--basic">Arrival</p>
+                    <div>
+                        <input id="arrival_airport" class="dropdown-card__input dropdown-card__input--basic"
+                            type="text" placeholder="Going To" value="" readonly />
+                        <!-- <p class="dropdown-card__status">Arrival</p> -->
+                    </div>
+                    <div class="flight__dropdown-card-arrow flight__dropdown-card-arrow--basic"></div>
+                </div>
+                <div class="flight__dropdown-options flight__dropdown-options--basic">
+                    <div class="flight__search-box">
+                        <svg class="icon flight__search-icon">
+                            <use xlink:href="./assets/icons/flight/searchh.svg#search"></use>
+                        </svg>
+                        <input class="flight__search-input" type="text"
+                            placeholder="Airport name or airport code" />
+                    </div>
+                    <ul>
+                        <li flight__search-result onclick=searchResult() class="flight__info">
+                            <div>
+                                <p class="flight__info-location">Stockholm</p>
+                                <p class="flight__info-airport">
+                                    Stockholm - Stockholm Arlanda Airport
+                                </p>
+                            </div>
+                            <h5 class="flight__info-code">ARN</h5>
+                        </li>
+                        <li flight__search-result onclick=searchResult() class="flight__info">
+                            <div>
+                                <p class="flight__info-location">Chittagong</p>
+                                <p class="flight__info-airport">
+                                    Shah Amanat International Airport
+                                </p>
+                            </div>
+                            <h5 class="flight__info-code">CGP</h5>
+                        </li>
+                        <li flight__search-result onclick=searchResult() class="flight__info">
+                            <div>
+                                <p class="flight__info-location">London</p>
+                                <p class="flight__info-airport">
+                                    London- London Heathrow Airport
+                                </p>
+                            </div>
+                            <h5 class="flight__info-code">LHR</h5>
+                        </li>
+                        <li flight__search-result onclick=searchResult() class="flight__info">
+                            <div>
+                                <p class="flight__info-location">Bangkok</p>
+                                <p class="flight__info-airport">
+                                    Suvarnabhumi Airport
+                                </p>
+                            </div>
+                            <h5 class="flight__info-code">BKK</h5>
+                        </li>
+                        <li flight__search-result onclick=searchResult() class="flight__info">
+                            <div>
+                                <p class="flight__info-location">Dubai</p>
+                                <p class="flight__info-airport">
+                                    Dubai International Airport
+                                </p>
+                            </div>
+                            <h5 class="flight__info-code">DXB</h5>
+                        </li>
+                        <li flight__search-result onclick=searchResult() class="flight__info">
+                            <div>
+                                <p class="flight__info-location">Singapore</p>
+                                <p class="flight__info-airport">
+                                    Singapore Changi Airport
+                                </p>
+                            </div>
+                            <h5 class="flight__info-code">SIN</h5>
+                        </li>
+                    </ul>
+                </div>
+                <div class="overlay"></div>
+            </section>
+            <div class="date-input">
+                <label class="date-input__label">Departure Date</label>
+                <div class="date-input__wrapper">
+                    <input type="text" id="departure_date" name="departure_date" class="date-input__input"
+                        value="<?php echo $departure_date; ?>" placeholder="Select Departure Date"
+                        autocomplete="off" />
+                    <img class="date-input__icon" src="./assets/images/calendar-icon.svg" alt="" />
+                </div>
+            </div>
+            <button type="button" class="multi-city__remove"> <img src="assets/icons/delete.svg" alt="">
+                <span>Remove</span></button>
+        </section>
+        <!-- second row -->
+        <section class="multi-city__search-city-section">
+            <section class="flight__dropdown">
+                <div flight__dropdown-card-basic onclick=multiCitySearch() class="dropdown-card dropdown-card--basic">
+                    <p class="dropdown-card__title dropdown-card__title--basic">Departure</p>
+                    <div>
+                        <input id="departure_airport" class="dropdown-card__input dropdown-card__input--basic"
+                            type="text" placeholder="Leaving From" value="" readonly />
+                        <!-- <p class="dropdown-card__status">Departure</p> -->
+                    </div>
+                    <div class="flight__dropdown-card-arrow flight__dropdown-card-arrow--basic"></div>
+                </div>
+                <div class="flight__dropdown-options flight__dropdown-options--basic">
+                    <div class="flight__search-box">
+                        <svg class="icon flight__search-icon">
+                            <use xlink:href="./assets/icons/flight/searchh.svg#search"></use>
+                        </svg>
+                        <input class="flight__search-input" type="text"
+                            placeholder="Airport name or airport code" />
+                    </div>
+                    <ul>
+                        <li flight__search-result onclick=searchResult() class="flight__info">
+                            <div>
+                                <p class="flight__info-location">Boston</p>
+                                <p class="flight__info-airport">
+                                    Boston - Logan International Airport
+                                </p>
+                            </div>
+                            <h5 class="flight__info-code">BOS</h5>
+                        </li>
+                        <li flight__search-result onclick=searchResult() class="flight__info">
+                            <div>
+                                <p class="flight__info-location">Dhaka</p>
+                                <p class="flight__info-airport">
+                                    Hazrat Shahjalal International Airport
+                                </p>
+                            </div>
+                            <h5 class="flight__info-code">DAC</h5>
+                        </li>
+                        <li flight__search-result onclick=searchResult() class="flight__info">
+                            <div>
+                                <p class="flight__info-location">London</p>
+                                <p class="flight__info-airport">
+                                    London- London Heathrow Airport
+                                </p>
+                            </div>
+                            <h5 class="flight__info-code">LHR</h5>
+                        </li>
+                        <li flight__search-result onclick=searchResult() class="flight__info">
+                            <div>
+                                <p class="flight__info-location">Perth</p>
+                                <p class="flight__info-airport">
+                                    Perth - Perth Airport
+                                </p>
+                            </div>
+                            <h5 class="flight__info-code">PER</h5>
+                        </li>
+                        <li flight__search-result onclick=searchResult() class="flight__info">
+                            <div>
+                                <p class="flight__info-location">Bangkok</p>
+                                <p class="flight__info-airport">
+                                    Suvarnabhumi Airport
+                                </p>
+                            </div>
+                            <h5 class="flight__info-code">BKK</h5>
+                        </li>
+                        <li flight__search-result onclick=searchResult() class="flight__info">
+                            <div>
+                                <p class="flight__info-location">Dubai</p>
+                                <p class="flight__info-airport">
+                                    Dubai International Airport
+                                </p>
+                            </div>
+                            <h5 class="flight__info-code">DXB</h5>
+                        </li>
+                        <li flight__search-result onclick=searchResult() class="flight__info">
+                            <div>
+                                <p class="flight__info-location">Singapore</p>
+                                <p class="flight__info-airport">
+                                    Singapore Changi Airport
+                                </p>
+                            </div>
+                            <h5 class="flight__info-code">SIN</h5>
+                        </li>
+                    </ul>
+                </div>
+                <div class="overlay"></div>
+            </section>
+            <section class="flight__dropdown">
+                <div flight__dropdown-card-basic onclick=multiCitySearch() class="dropdown-card dropdown-card--basic">
+                    <p class="dropdown-card__title dropdown-card__title--basic">Arrival</p>
+                    <div>
+                        <input id="arrival_airport" class="dropdown-card__input dropdown-card__input--basic"
+                            type="text" placeholder="Going To" value="" readonly />
+                        <!-- <p class="dropdown-card__status">Arrival</p> -->
+                    </div>
+                    <div class="flight__dropdown-card-arrow flight__dropdown-card-arrow--basic"></div>
+                </div>
+                <div class="flight__dropdown-options flight__dropdown-options--basic">
+                    <div class="flight__search-box">
+                        <svg class="icon flight__search-icon">
+                            <use xlink:href="./assets/icons/flight/searchh.svg#search"></use>
+                        </svg>
+                        <input class="flight__search-input" type="text"
+                            placeholder="Airport name or airport code" />
+                    </div>
+                    <ul>
+                        <li flight__search-result onclick=searchResult() class="flight__info">
+                            <div>
+                                <p class="flight__info-location">Stockholm</p>
+                                <p class="flight__info-airport">
+                                    Stockholm - Stockholm Arlanda Airport
+                                </p>
+                            </div>
+                            <h5 class="flight__info-code">ARN</h5>
+                        </li>
+                        <li flight__search-result onclick=searchResult() class="flight__info">
+                            <div>
+                                <p class="flight__info-location">Chittagong</p>
+                                <p class="flight__info-airport">
+                                    Shah Amanat International Airport
+                                </p>
+                            </div>
+                            <h5 class="flight__info-code">CGP</h5>
+                        </li>
+                        <li flight__search-result onclick=searchResult() class="flight__info">
+                            <div>
+                                <p class="flight__info-location">London</p>
+                                <p class="flight__info-airport">
+                                    London- London Heathrow Airport
+                                </p>
+                            </div>
+                            <h5 class="flight__info-code">LHR</h5>
+                        </li>
+                        <li flight__search-result onclick=searchResult() class="flight__info">
+                            <div>
+                                <p class="flight__info-location">Bangkok</p>
+                                <p class="flight__info-airport">
+                                    Suvarnabhumi Airport
+                                </p>
+                            </div>
+                            <h5 class="flight__info-code">BKK</h5>
+                        </li>
+                        <li flight__search-result onclick=searchResult() class="flight__info">
+                            <div>
+                                <p class="flight__info-location">Dubai</p>
+                                <p class="flight__info-airport">
+                                    Dubai International Airport
+                                </p>
+                            </div>
+                            <h5 class="flight__info-code">DXB</h5>
+                        </li>
+                        <li flight__search-result onclick=searchResult() class="flight__info">
+                            <div>
+                                <p class="flight__info-location">Singapore</p>
+                                <p class="flight__info-airport">
+                                    Singapore Changi Airport
+                                </p>
+                            </div>
+                            <h5 class="flight__info-code">SIN</h5>
+                        </li>
+                    </ul>
+                </div>
+                <div class="overlay"></div>
+            </section>
+            <div class="date-input">
+                <label class="date-input__label">Departure Date</label>
+                <div class="date-input__wrapper">
+                    <input type="text" id="departure_date" name="departure_date" class="date-input__input"
+                        value="<?php echo $departure_date; ?>" placeholder="Select Departure Date"
+                        autocomplete="off" />
+                    <img class="date-input__icon" src="./assets/images/calendar-icon.svg" alt="" />
+                </div>
+            </div>
+            <button type="button" class="multi-city__remove"> <img src="assets/icons/delete.svg" alt="">
+                <span>Remove</span></button>
+        </section>
+
+
+        <!-- cities are add in this container -->
+        <section add-multi-city-trip-container class="add-multi-city-trip-container">
+        </section>
+
+        <!-- trip add btn -->
+        <button add-multi-city-trip-btn type="button" class="add-trip__btn">+ Add Trip</button>
+
+        <button type="submit" id="search_flight_button" class="btn__primary flight__search-form-btn">
+            <svg class="icon btn__primary-icon">
+                <use xlink:href="./assets/icons/flight/flight_template-icons.svg#search"></use>
+            </svg>
+            Search
+        </button>
+    </form>
+
+
+
+
+
+    <!-- template -->
+    <template multi-city-trip-template>
+        <section multi-city-trip-wrapper  class="multi-city__search-city-section">
+          <section class="flight__dropdown">
+            <div flight__dropdown-card-basic onclick=multiCitySearch() class="dropdown-card dropdown-card--basic">
+              <p class="dropdown-card__title dropdown-card__title--basic">Departure</p>
+              <div>
+                <input id="departure_airport" class="dropdown-card__input dropdown-card__input--basic" type="text"
+                  placeholder="Leaving From" value="" readonly />
+                <!-- <p class="dropdown-card__status">Departure</p> -->
+              </div>
+              <div class="flight__dropdown-card-arrow flight__dropdown-card-arrow--basic"></div>
+            </div>
+            <div class="flight__dropdown-options flight__dropdown-options--basic">
+              <div class="flight__search-box">
+                <svg class="icon flight__search-icon">
+                  <use xlink:href="./assets/icons/flight/searchh.svg#search"></use>
+                </svg>
+                <input class="flight__search-input" type="text" placeholder="Airport name or airport code" />
+              </div>
+              <ul>
+                <li flight__search-result onclick=searchResult() class="flight__info">
+                  <div>
+                    <p class="flight__info-location">Boston</p>
+                    <p class="flight__info-airport">
+                      Boston - Logan International Airport
+                    </p>
+                  </div>
+                  <h5 class="flight__info-code">BOS</h5>
+                </li>
+                <li flight__search-result onclick=searchResult() class="flight__info">
+                  <div>
+                    <p class="flight__info-location">Dhaka</p>
+                    <p class="flight__info-airport">
+                      Hazrat Shahjalal International Airport
+                    </p>
+                  </div>
+                  <h5 class="flight__info-code">DAC</h5>
+                </li>
+                <li flight__search-result onclick=searchResult() class="flight__info">
+                  <div>
+                    <p class="flight__info-location">London</p>
+                    <p class="flight__info-airport">
+                      London- London Heathrow Airport
+                    </p>
+                  </div>
+                  <h5 class="flight__info-code">LHR</h5>
+                </li>
+                <li flight__search-result onclick=searchResult() class="flight__info">
+                  <div>
+                    <p class="flight__info-location">Perth</p>
+                    <p class="flight__info-airport">
+                      Perth - Perth Airport
+                    </p>
+                  </div>
+                  <h5 class="flight__info-code">PER</h5>
+                </li>
+                <li flight__search-result onclick=searchResult() class="flight__info">
+                  <div>
+                    <p class="flight__info-location">Bangkok</p>
+                    <p class="flight__info-airport">
+                      Suvarnabhumi Airport
+                    </p>
+                  </div>
+                  <h5 class="flight__info-code">BKK</h5>
+                </li>
+                <li flight__search-result onclick=searchResult() class="flight__info">
+                  <div>
+                    <p class="flight__info-location">Dubai</p>
+                    <p class="flight__info-airport">
+                      Dubai International Airport
+                    </p>
+                  </div>
+                  <h5 class="flight__info-code">DXB</h5>
+                </li>
+                <li flight__search-result onclick=searchResult() class="flight__info">
+                  <div>
+                    <p class="flight__info-location">Singapore</p>
+                    <p class="flight__info-airport">
+                      Singapore Changi Airport
+                    </p>
+                  </div>
+                  <h5 class="flight__info-code">SIN</h5>
+                </li>
+              </ul>
+            </div>
+            <div class="overlay"></div>
+          </section>
+          <section class="flight__dropdown">
+            <div flight__dropdown-card-basic onclick=multiCitySearch() class="dropdown-card dropdown-card--basic">
+              <p class="dropdown-card__title dropdown-card__title--basic">Arrival</p>
+              <div>
+                <input id="arrival_airport" class="dropdown-card__input dropdown-card__input--basic" type="text"
+                  placeholder="Going To" value="" readonly />
+                <!-- <p class="dropdown-card__status">Arrival</p> -->
+              </div>
+              <div class="flight__dropdown-card-arrow flight__dropdown-card-arrow--basic"></div>
+            </div>
+            <div class="flight__dropdown-options flight__dropdown-options--basic">
+              <div class="flight__search-box">
+                <svg class="icon flight__search-icon">
+                  <use xlink:href="./assets/icons/flight/searchh.svg#search"></use>
+                </svg>
+                <input class="flight__search-input" type="text" placeholder="Airport name or airport code" />
+              </div>
+              <ul>
+                <li flight__search-result onclick=searchResult() class="flight__info">
+                  <div>
+                    <p class="flight__info-location">Stockholm</p>
+                    <p class="flight__info-airport">
+                      Stockholm - Stockholm Arlanda Airport
+                    </p>
+                  </div>
+                  <h5 class="flight__info-code">ARN</h5>
+                </li>
+                <li flight__search-result onclick=searchResult() class="flight__info">
+                  <div>
+                    <p class="flight__info-location">Chittagong</p>
+                    <p class="flight__info-airport">
+                      Shah Amanat International Airport
+                    </p>
+                  </div>
+                  <h5 class="flight__info-code">CGP</h5>
+                </li>
+                <li flight__search-result onclick=searchResult() class="flight__info">
+                  <div>
+                    <p class="flight__info-location">London</p>
+                    <p class="flight__info-airport">
+                      London- London Heathrow Airport
+                    </p>
+                  </div>
+                  <h5 class="flight__info-code">LHR</h5>
+                </li>
+                <li flight__search-result onclick=searchResult() class="flight__info">
+                  <div>
+                    <p class="flight__info-location">Bangkok</p>
+                    <p class="flight__info-airport">
+                      Suvarnabhumi Airport
+                    </p>
+                  </div>
+                  <h5 class="flight__info-code">BKK</h5>
+                </li>
+                <li flight__search-result onclick=searchResult() class="flight__info">
+                  <div>
+                    <p class="flight__info-location">Dubai</p>
+                    <p class="flight__info-airport">
+                      Dubai International Airport
+                    </p>
+                  </div>
+                  <h5 class="flight__info-code">DXB</h5>
+                </li>
+                <li flight__search-result onclick=searchResult() class="flight__info">
+                  <div>
+                    <p class="flight__info-location">Singapore</p>
+                    <p class="flight__info-airport">
+                      Singapore Changi Airport
+                    </p>
+                  </div>
+                  <h5 class="flight__info-code">SIN</h5>
+                </li>
+              </ul>
+            </div>
+            <div class="overlay"></div>
+          </section>
+          <div class="date-input">
+            <label class="date-input__label">Departure Date</label>
+            <div class="date-input__wrapper">
+              <input type="text" id="departure_date" name="departure_date" class="date-input__input"
+                value="<?php echo $departure_date; ?>" placeholder="Select Departure Date" autocomplete="off" />
+              <img class="date-input__icon" src="./assets/images/calendar-icon.svg" alt="" />
+            </div>
+          </div>
+      
+          <button multi-city-trip-remove-btn onclick="multiCityRemoveTrip()" type="button" class="multi-city__remove"> <img src="assets/icons/delete.svg" alt="">
+          <span>Remove</span></button>
+        </section>
+        </template>
+
+</body>
+</html>
